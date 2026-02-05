@@ -1,0 +1,4 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://rodrigo_in_db:SenhaMongo@cluster0.brjvci5.mongodb.net/?appName=Cluster0
