@@ -28,7 +28,12 @@ public class LivroController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteLivro(String titulo){
+    public void deleteLivro(@RequestAttribute String titulo){
         livroService.deleteLivro(titulo);
+    }
+
+    @PutMapping("/update")
+    public void putLivro(@RequestBody LivroModel livroModel){
+        livroService.updateLivro(livroModel);
     }
 }

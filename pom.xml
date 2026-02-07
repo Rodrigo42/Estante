@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>org.drogo</groupId>
-    <artifactId>estnt</artifactId>
+    <artifactId>Estante</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

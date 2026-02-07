@@ -1,5 +1,7 @@
 package org.drogo.service;
 
+import org.drogo.exceptions.BodyVazioException;
+import org.drogo.exceptions.LivroJaExisteException;
 import org.drogo.model.LivroModel;
 import org.drogo.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,9 @@ public class LivroService {
 
     public LivroModel addLivro(LivroModel livroModel){
         if(repository.findByTitulo(livroModel.getTitulo()) != null){
-            throw new RuntimeException("Esse livro já existe");
+            throw new LivroJaExisteException("Esse livro já existe");
         }else if(livroModel.isEmpty()){
-            throw new RuntimeException("Erro: foi enviado uma requisição vazia. \n" +
+            throw new BodyVazioException("Erro: foi enviado uma requisição vazia. \n" +
                     "Favor informar: ISBN, Titulo, Autor, Editora, Data de Lançamento e Numero de paginas.");
         }
 
