@@ -4,9 +4,11 @@ import org.drogo.model.LivroModel;
 import org.drogo.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/livros")
@@ -28,8 +30,9 @@ public class LivroController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteLivro(@RequestAttribute String titulo){
-        livroService.deleteLivro(titulo);
+    public ResponseEntity<Void> deleteLivro(@RequestBody Map<String, String> body){
+        livroService.deleteLivroPeloTitulo(body.get("titulo"));
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/update")

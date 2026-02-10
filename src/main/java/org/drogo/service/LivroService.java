@@ -30,9 +30,8 @@ public class LivroService {
         return repository.save(livroModel);
     }
 
-    public void deleteLivro(String titulo){
-
-        repository.delete(repository.findByTitulo(titulo));
+    public void deleteLivroPeloTitulo(String titulo){
+        repository.deleteByTitulo(titulo);
     }
 
     public LivroModel updateLivro(LivroModel livroModelCorrecao){
