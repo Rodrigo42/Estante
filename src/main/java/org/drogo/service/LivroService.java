@@ -35,7 +35,7 @@ public class LivroService {
     }
 
     public LivroModel updateLivro(LivroModel livroModelCorrecao){
-        LivroModel livroModel = repository.findByTitulo(livroModelCorrecao.getTitulo());
+        LivroModel livroModel = repository.findByIsbn(livroModelCorrecao.getIsbn());
         if(livroModel.isEmpty()){
             throw new RuntimeException("Erro: Livro não localizado");
         }else{

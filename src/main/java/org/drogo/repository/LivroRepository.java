@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface LivroRepository extends MongoRepository<LivroModel, String> {
     LivroModel findByTitulo(String titulo);
     void deleteByTitulo(String titulo);
+    LivroModel findByIsbn(String isbn);
 }

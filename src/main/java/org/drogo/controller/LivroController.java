@@ -30,9 +30,9 @@ public class LivroController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteLivro(@RequestBody Map<String, String> body){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteLivro(@RequestBody Map<String, String> body){
         livroService.deleteLivroPeloTitulo(body.get("titulo"));
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/update")
