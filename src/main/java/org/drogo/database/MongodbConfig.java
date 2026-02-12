@@ -1,4 +1,4 @@
-package org.drogo.dbFactory;
+package org.drogo.database;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.client.MongoClient;

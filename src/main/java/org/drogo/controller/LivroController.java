@@ -1,10 +1,10 @@
 package org.drogo.controller;
 
+import jakarta.validation.Valid;
 import org.drogo.model.LivroModel;
 import org.drogo.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class LivroController {
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public LivroModel createLivro(@RequestBody LivroModel livroModel){
+    public LivroModel createLivro(@Valid @RequestBody LivroModel livroModel){
         return livroService.addLivro(livroModel);
     }
 
@@ -36,7 +36,7 @@ public class LivroController {
     }
 
     @PutMapping("/update")
-    public void putLivro(@RequestBody LivroModel livroModel){
+    public void updateLivro(@RequestBody LivroModel livroModel){
         livroService.updateLivro(livroModel);
     }
 }
