@@ -1,6 +1,7 @@
 package org.drogo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
@@ -21,9 +22,7 @@ import java.time.LocalDate;
 public class LivroModel {
 
     @Id
-    @NotNull
     private String isbn;
-    @NotNull
     private String titulo;
     private String autor;
     private String editora;
@@ -40,5 +39,7 @@ public class LivroModel {
                 && (lancamento == null)
                 && (paginas == null || paginas.isEmpty()));
     }
+
+
 
 }

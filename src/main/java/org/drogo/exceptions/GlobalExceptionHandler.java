@@ -27,10 +27,20 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+
+
     @ExceptionHandler(FutureDateException.class)
     public ResponseEntity<Map<String, String>> handlerFutureDate(FutureDateException exception){
         Map<String, String> response = new HashMap<>();
         response.put("Erro: ", exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NotNullException.class)
+    public ResponseEntity<Map<String, String>> handleNotNull(NotNullException exception){
+        Map<String, String> response = new HashMap<>();
+        response.put("Erro: ", exception.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
 }

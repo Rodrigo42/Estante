@@ -3,6 +3,7 @@ package org.drogo.service;
 import org.drogo.exceptions.BodyVazioException;
 import org.drogo.exceptions.FutureDateException;
 import org.drogo.exceptions.LivroJaExisteException;
+import org.drogo.exceptions.NotNullException;
 import org.drogo.model.LivroModel;
 import org.drogo.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,14 @@ public class LivroService {
         if(repository.findByTitulo(livroModel.getTitulo()) != null){
             throw new LivroJaExisteException("Esse livro já existe");
         }else if(livroModel.isAllEmpty()){
-            throw new BodyVazioException("Foi enviado uma requisição vazia. \n" +
+            throw new BodyVazioException("Foi enviado uma requisição vazia.\n" +
                     "Favor informar: ISBN, Titulo, Autor, Editora, Data de Lançamento e Numero de paginas.");
         }else if((livroModel.getLancamento()).isAfter(LocalDate.now())){
-            throw new FutureDateException("Foi passado uma data no futuro");
+            throw new FutureDateException("Foi passado uma data no futuro.");
+        }else if((livroModel.getTitulo()).isEmpty() || (livroModel.getTitulo()).isBlank()){
+            throw new NotNullException("Título é obrigatório.");
+        }else if((livroModel.getIsbn()).isEmpty() || (livroModel.getIsbn()).isBlank()){
+            throw new NotNullException("ISBN é obrigatório.");
         }
 
         return repository.save(livroModel);
