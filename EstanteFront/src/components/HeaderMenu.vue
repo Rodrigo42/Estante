@@ -16,9 +16,9 @@
         <span></span>
         </button>
 
-        <div id="titulo">
+        <h1 id="titulo">
             Estante
-        </div>
+        </h1>
 
         <nav v-if="menuAbert" id="menu">
         <a href="#">Coleção</a>
