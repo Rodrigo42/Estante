@@ -41,7 +41,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        margin-top: 1.5%;
+        margin-top: 1%;
         height: 4rem;
         border-radius: 15px;
         position: relative;
