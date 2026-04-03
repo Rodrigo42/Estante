@@ -21,11 +21,11 @@
         </h1>
 
         <nav v-if="menuAbert" id="menu">
-        <a href="#">Coleção</a>
-        <a href="#">Adicionar</a>
-        <a href="#">Editar</a>
-        <a href="#">Excluir</a>
-        <a href="#">Sair</a>
+            <a href="/">Início</a>
+            <a href="/colecao">Coleção</a>
+            <a href="/cadastro">Adicionar</a>
+            <a href="/editar">Editar</a>
+            <a href="#">Sair</a>
         </nav>
     </div>
 
