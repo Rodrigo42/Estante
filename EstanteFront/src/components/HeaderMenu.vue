@@ -17,7 +17,7 @@
         </button>
 
         <h1 id="titulo">
-            Estante
+            Estante 📚
         </h1>
 
         <nav v-if="menuAbert" id="menu">
