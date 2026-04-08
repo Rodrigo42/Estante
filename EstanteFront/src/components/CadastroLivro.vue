@@ -1,43 +1,76 @@
 <script setup>
 import { ref } from 'vue';
+import { adicionarLivro } from '../services/endpoints.js';
+
+const isbn = ref('');
+const titulo = ref('');
+const autor = ref('');
+const editora = ref('');
+const lancamento = ref('');
+const paginas = ref('');
+const cadastrarLivro = async () => {
+    const livro = {
+        isbn: isbn.value,
+        titulo: titulo.value,
+        autor: autor.value,
+        editora: editora.value,
+        lancamento: lancamento.value,
+        paginas: paginas.value
+    };
+
+    try {
+        await adicionarLivro(livro);
+        alert('Livro cadastrado com sucesso!');
+        // Limpar os campos após o cadastro
+        isbn.value = '';
+        titulo.value = '';
+        autor.value = '';
+        editora.value = '';
+        lancamento.value = '';
+        paginas.value = '';
+    } catch (error) {
+        console.error('Erro ao cadastrar livro:', error);
+        alert('Ocorreu um erro ao cadastrar o livro. Por favor, tente novamente.');
+    }
+};
 </script>
 
 <template>
     <div id="cadastro-livro">
         <h2>Cadastro de Livro</h2>
-        <form>
+        <form @submit.prevent="cadastrarLivro">
             <div class="campo">
             <label class="" for="isbn">ISBN:</label>
-            <input type="text" id="isbn" name="isbn" required>
+            <input type="text" id="isbn" name="isbn" v-model="isbn" required>
             </div>
 
             <div class="campo">
             <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required>
+            <input type="text" id="titulo" name="titulo" v-model="titulo" required>
             </div>
 
             <div class="campo">
             <label for="autor">Autor:</label>
-            <input type="text" id="autor" name="autor">
+            <input type="text" id="autor" name="autor" v-model="autor">
             </div>
 
             <div class="campo">
             <label for="editora">Editora:</label>
-            <input type="text" id="editora" name="editora">
+            <input type="text" id="editora" name="editora" v-model="editora">
             </div>
 
             <div class="campo">
             <label for="lacamento">Lançamento:</label>
-            <input type="date" id="lancamento" name="lancamento">
+            <input type="date" id="lancamento" name="lancamento" v-model="lancamento">
             </div>
 
             <div class="campo">
             <label for="paginas">Páginas:</label>
-            <input type="number" id="paginas" name="paginas">
+            <input type="number" id="paginas" name="paginas" v-model="paginas">
             </div>
         </form>
 
-        <button type="submit">Cadastrar</button>
+        <button type="submit" @click="cadastrarLivro(livro)">Cadastrar</button>
     </div>
 </template>
 
