@@ -26,7 +26,7 @@ public class LivroModel {
     private String titulo;
     private String autor;
     private String editora;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate lancamento;
     private String paginas;
 

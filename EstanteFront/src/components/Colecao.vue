@@ -1,63 +1,74 @@
 <script setup>
-import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
+    import { deletarLivroPorTitulo, listarLivros } from '../services/endpoints.js';
+
+    const livros = ref([])
+    const loading = ref(false);
+    const erro = ref(null);
+    
+
+    async function fetchLivros() {
+        loading.value = true;
+        erro.value = null;
+
+        try{
+            const response = await listarLivros()
+            livros.value= response.data
+        }catch(e){
+            erro.value = e?.response?.data?.['Erro: '] || 'Erro ao carregar livros'
+        }
+        finally{
+            loading.value = false;
+        }
+    }
+    
+    async function deletarLivro(titulo){
+        try{
+            await deletarLivroPorTitulo(titulo)
+            await fetchLivros()
+        }catch(e){
+            erro.value = e?.response?.data?.['Erro: '] || 'Erro ao deletar livro'
+        }
+    }
+
+    onMounted(fetchLivros)
 
 </script>
 
 <template>
-    <div id="colecao">
-        <h2>Coleção</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ISBN</th>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>Editora</th>
-                    <th>Lançamento</th>
-                    <th>Paginas</th>
-                    <th>X</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>978-3-16-148410-0</td>
-                    <td>Harry Potter e a volta dos que não foram</td>
-                    <td>J.K. Rowling</td>
-                    <td>Rocco</td>
-                    <td>2007</td>
-                    <td>500</td>
-                    <td><button type="button" alt="Excluir" id="deletar-livro">Excluir</button></td>
-                </tr>
-                <tr>
-                    <td>978-1-23-456789-0</td>
-                    <td>Senhor dos aneis e o Boromir teria se jogado</td>
-                    <td>J.R.R. Tolkien</td>
-                    <td>Martins Fontes</td>
-                    <td>1954</td>
-                    <td>1200</td>
-                    <td><button type="button" alt="Excluir" id="deletar-livro">Excluir</button></td>
-                </tr>
-                <tr>
-                    <td>978-0-12-345678-9</td>
-                    <td>Como ler 3,4 livros por segundo</td>
-                    <td>John Doe</td>
-                    <td>Self-Published</td>
-                    <td>2020</td>
-                    <td>200</td>
-                    <td><button type="button" alt="Excluir" id="deletar-livro">Excluir</button></td>
-                </tr>
-                <tr>
-                    <td>978-9-87-654321-0</td>
-                    <td>5am club: Acorde as 5 da manhã e seja um otario desde cedo</td>
-                    <td>Robin Sharma</td>
-                    <td>BestSeller</td>
-                    <td>2018</td>
-                    <td>300</td>
-                    <td><button type="button" alt="Excluir" id="deletar-livro">Excluir</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+      
+        <div id="colecao">
+            <div v-if="loading">Carregando livros...</div>
+            <div v-else-if="erro">{{ erro }}</div>
+            <div v-else>  
+                <h2>Coleção</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ISBN</th>
+                            <th>Titulo</th>
+                            <th>Autor</th>
+                            <th>Editora</th>
+                            <th>Lançamento</th>
+                            <th>Paginas</th>
+                            <th>X</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="livro in livros" :key="livro.isbn">
+                            <td>{{ livro.isbn }}</td>
+                            <td>{{ livro.titulo }}</td>
+                            <td>{{ livro.autor }}</td>
+                            <td>{{ livro.editora }}</td>
+                            <td>{{ livro.lancamento }}</td>
+                            <td>{{ livro.paginas }}</td>
+                            <td><button type="button" alt="Excluir" id="deletar-livro" @click="deletarLivro(livro.titulo)">Excluir</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
 </template>
 
 <style scoped>
@@ -72,6 +83,7 @@ import { ref } from 'vue';
         gap: 1rem;
         justify-content: center;
         align-items: center;
+        
     }
     #colecao h2{
         font-family: ubuntu;
