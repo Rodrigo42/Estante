@@ -21,8 +21,10 @@
   * **PUT (livros/update)** -> Recebe o mesmo body do post com as informações novas. Se baseia no ISBN para atualizar as informações.
   * **DELTE (livros/delete)** -> Recebe um body com titulo a ser excluido. Body de Exemplo: `"titulo": "Crepusculo"`
 
+  * **Frontend finalizado**
+
 ## 🖥️ Proximos passos
-  * Desenvolver o front-end.
+  * Integração Frontend X API
   * Subir a aplicação para AWS.
   * Desenvolver o sistema de usuários com segurança.
 
