@@ -1,45 +1,112 @@
 <script setup>
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
+    import { atualizarLivro } from '../services/endpoints.js';
+    import { buscarLivroPorIsbn } from '../services/endpoints.js';
+    import { useRoute } from 'vue-router';
+
+    const isbn = ref('');
+    const titulo = ref('');
+    const autor = ref('');
+    const editora = ref('');
+    const lancamento = ref('');
+    const paginas = ref('');
+    const route = useRoute();
+
+    const editarLivro = async () => {
+        const livro = {
+            isbn: isbn.value,
+            titulo: titulo.value,
+            autor: autor.value,
+            editora: editora.value,
+            lancamento: lancamento.value,
+            paginas: paginas.value
+        };
+
+        try {
+            await atualizarLivro(livro);
+            alert('Livro atualizado com sucesso!');
+            // Limpar os campos após a atualização
+            isbn.value = '';
+            titulo.value = '';
+            autor.value = '';
+            editora.value = '';
+            lancamento.value = '';
+            paginas.value = '';
+        } catch (error) {
+            console.error('Erro ao atualizar livro:', error);
+            alert('Ocorreu um erro ao atualizar o livro. Por favor, tente novamente.');
+        }
+    };
+
+    const buscarLivro = async () => {
+        try {
+            const response = await buscarLivroPorIsbn(isbn.value);
+            const livro = response.data;
+            titulo.value = livro.titulo;
+            autor.value = livro.autor;
+            editora.value = livro.editora;
+            lancamento.value = livro.lancamento;
+            paginas.value = livro.paginas;
+
+            
+
+
+        } catch (error) {
+            console.error('Erro ao buscar livro:', error);
+            alert('Ocorreu um erro ao buscar o livro. Por favor, tente novamente.');
+        }
+    };
+
+    onMounted(() => {
+        const query = route.query;
+        isbn.value = query.isbn || '';
+        titulo.value = query.titulo || '';
+        autor.value = query.autor || '';
+        editora.value = query.editora || '';
+        lancamento.value = query.lancamento || '';
+        paginas.value = query.paginas || '';
+    });
+
 </script>
 
 <template>
     <div id="editar-livro">
         <h2>Editar Livro</h2>
         <h3>Preencha o titulo para buscar as informações do livro</h3>
-        <form>
+        <form @submit.prevent="editarLivro">
             <div class="campo">
             <label class="" for="isbn">ISBN:</label>
-            <input type="text" id="isbn" name="isbn" required>
+            <input type="text" id="isbn" name="isbn" v-model="isbn" required>
             </div>
 
             <div class="campo">
             <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" required>
+            <input type="text" id="titulo" name="titulo" v-model="titulo" required>
             </div>
 
             <div class="campo">
             <label for="autor">Autor:</label>
-            <input type="text" id="autor" name="autor">
+            <input type="text" id="autor" name="autor" v-model="autor">
             </div>
 
             <div class="campo">
             <label for="editora">Editora:</label>
-            <input type="text" id="editora" name="editora">
+            <input type="text" id="editora" name="editora" v-model="editora">
             </div>
 
             <div class="campo">
             <label for="lacamento">Lançamento:</label>
-            <input type="date" id="lancamento" name="lancamento">
+            <input type="date" id="lancamento" name="lancamento" v-model="lancamento">
             </div>
 
             <div class="campo">
             <label for="paginas">Páginas:</label>
-            <input type="number" id="paginas" name="paginas">
+            <input type="number" id="paginas" name="paginas" v-model="paginas">
             </div>
         </form>
         <div id="button">
-            <button type="submit">Editar</button>
-            <button type="button">Buscar</button>
+            <button type="submit" @click="editarLivro(livro)">Editar</button>
+            <button type="button" @click="buscarLivro(isbn)">Buscar</button>
         </div>
     </div>
 </template>

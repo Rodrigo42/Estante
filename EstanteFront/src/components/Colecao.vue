@@ -1,10 +1,12 @@
 <script setup>
     import { onMounted, ref } from 'vue';
-    import { deletarLivroPorTitulo, listarLivros } from '../services/endpoints.js';
+    import { deletarLivroPorTitulo, listarLivros} from '../services/endpoints.js';
+    import { useRouter } from 'vue-router';
 
     const livros = ref([])
     const loading = ref(false);
     const erro = ref(null);
+    const router = useRouter();
     
 
     async function fetchLivros() {
@@ -31,6 +33,25 @@
         }
     }
 
+    async function alterarLivro(livro){
+        try{
+            router.push({
+                name: 'EditarLivro',
+                query: {
+                    isbn: livro.isbn ?? '',
+                    titulo: livro.titulo ?? '',
+                    autor: livro.autor ?? '',
+                    editora: livro.editora ?? '',
+                    lancamento: livro.lancamento ?? '',
+                    paginas: livro.paginas ?? ''
+                }
+            })
+        
+        }catch(e){
+            erro.value = e?.response?.data?.['Erro: '] || 'Erro ao editar livro'
+        }
+    }
+
     onMounted(fetchLivros)
 
 </script>
@@ -52,6 +73,7 @@
                             <th>Lançamento</th>
                             <th>Paginas</th>
                             <th>X</th>
+                            <th>O</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +84,13 @@
                             <td>{{ livro.editora }}</td>
                             <td>{{ livro.lancamento }}</td>
                             <td>{{ livro.paginas }}</td>
-                            <td><button type="button" alt="Excluir" id="deletar-livro" @click="deletarLivro(livro.titulo)">Excluir</button></td>
+                            <td id="td-button">
+                                <button type="button" alt="Excluir" id="deletar-livro" @click="deletarLivro(livro.titulo)">Excluir</button>
+                                
+                            </td>
+                            <td>
+                                <button type="button" alt="Editar" id="editar-livro" @click="alterarLivro(livro)">Editar</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -82,7 +110,8 @@
         flex-direction: column;
         gap: 1rem;
         justify-content: center;
-        align-items: center;
+        align-items: left;
+        
         
     }
     #colecao h2{
@@ -113,10 +142,18 @@
         
     }
 
-    #colecao button{
+    #colecao #deletar-livro{
         border-radius: 5px;
         border: none;
-        background-color: #a81111;
+        background-color: #a31c1cf3;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    #colecao #editar-livro{
+        border-radius: 5px;
+        border: none;
+        background-color: #a18c13e1;
         color: #fff;
         cursor: pointer;
     }
