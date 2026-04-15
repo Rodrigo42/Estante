@@ -22,9 +22,9 @@
   * **DELTE (livros/delete)** -> Recebe um body com titulo a ser excluido. Body de Exemplo: `"titulo": "Crepusculo"`
 
   * **Frontend finalizado**
+  * **Integração Frontend X Backend finalizada**
 
 ## 🖥️ Proximos passos
-  * Integração Frontend X API
   * Subir a aplicação para AWS.
   * Desenvolver o sistema de usuários com segurança.
 
