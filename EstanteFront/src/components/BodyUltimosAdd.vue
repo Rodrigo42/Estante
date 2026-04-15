@@ -1,19 +1,13 @@
 <script setup>
 import { ref } from 'vue';
+import CardLivro from './CardLivro.vue';
 
 </script>
 
 <template>
     <div id="body-ultimos-add">
         <h2>Últimos Adicionados</h2>
-        <ul>
-            <li>Harry Potter e a volta dos que não foram</li>
-            <li>Senhor dos aneis e o Boromir teria se jogado</li>
-            <li>Como ler 3,4 livros por segundo</li>
-            <li>5am club: Acorde as 5 da manhã e seja um otario desde cedo</li>
-            <li>Cuscuz com Deus pai</li>
-        </ul>
-        
+        <CardLivro />
     </div>
 </template>
 
@@ -36,16 +30,5 @@ import { ref } from 'vue';
         color: rgb(0, 0, 0);
     }
 
-    #body-ultimos-add ul{
-        list-style-type: none;
-        padding-left: 0;
-        display: flex;
-        
-    }
-
-    #body-ultimos-add li{
-        color: rgb(0, 0, 0);
-        font-family: ubuntu;
-        padding: 1em;
-    }
+   
 </style>
