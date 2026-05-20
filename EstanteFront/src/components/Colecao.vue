@@ -9,13 +9,21 @@
     const router = useRouter();
     
 
-    async function fetchLivros() {
+    const currentPage = ref(0);
+    const pageSize = ref(10);
+    const totalPages = ref(0);
+
+
+
+    async function fetchLivros(page = 0) {
         loading.value = true;
         erro.value = null;
 
         try{
-            const response = await listarLivros()
-            livros.value= response.data
+            const response = await listarLivros(page, pageSize.value);
+            livros.value= response.data.content;
+            totalPages.value = response.data.totalPages;
+            currentPage.value = page;
         }catch(e){
             erro.value = e?.response?.data?.['Erro: '] || 'Erro ao carregar livros'
         }
@@ -49,6 +57,18 @@
         
         }catch(e){
             erro.value = e?.response?.data?.['Erro: '] || 'Erro ao editar livro'
+        }
+    }
+
+    const proximaPagina = () =>{
+        if (currentPage.value < totalPages.value - 1){
+            fetchLivros(currentPage.value + 1)
+        }
+    }
+
+    const paginaAnterior = () => {
+        if (currentPage.value > 0){
+            fetchLivros(currentPage.value - 1)
         }
     }
 
@@ -94,6 +114,20 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <div id="pagination-controls">
+                    <button 
+                    type="button"
+                    @click="paginaAnterior"
+                    :disabled="currentPage === 0"
+                    >← Anterior</button>
+                    <span id="pagina-atual">Página {{ currentPage +1 }} de {{ totalPages }}</span>
+                    <button 
+                    type="button"
+                    @click="proximaPagina"
+                    :disabled="currentPage >= totalPages - 1"
+                    >Próxima →</button>
+                </div>
             </div>
         </div>
     
@@ -117,6 +151,7 @@
     #colecao h2{
         font-family: ubuntu;
         color: rgb(0, 0, 0);
+        text-align: center;
     }
     #colecao table{
         border-collapse: collapse;
@@ -156,5 +191,33 @@
         background-color: #a18c13e1;
         color: #fff;
         cursor: pointer;
+    }
+
+     #pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    #pagination-controls button {
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        border: none;
+        background-color: #000000;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    #pagination-controls button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    #page-info {
+        color: rgb(0, 0, 0);
+        font-family: ubuntu;
+        font-weight: bold;
     }
 </style>

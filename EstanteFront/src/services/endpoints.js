@@ -1,6 +1,6 @@
 import api from './api.js'
 
-export const listarLivros = () => api.get('');
+export const listarLivros = (page, size) => api.get('', { params: { page, size } });
 
 export const deletarLivroPorTitulo = (titulo) => api.delete('/delete', { data: { titulo } });
 

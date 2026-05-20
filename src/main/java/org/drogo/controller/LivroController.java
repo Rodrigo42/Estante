@@ -4,6 +4,10 @@ import jakarta.validation.Valid;
 import org.drogo.model.LivroModel;
 import org.drogo.service.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +28,23 @@ public class LivroController {
         return livroService.addLivro(livroModel);
     }
 
+//    @GetMapping
+//    public List<LivroModel> getTodosLivros(){
+//        return livroService.getTodosLivros();
+//    }
+
     @GetMapping
-    public List<LivroModel> getTodosLivros(){
-        return livroService.getTodosLivros();
+    public Page<LivroModel> getTodosLivros(
+            @RequestParam(defaultValue = "0")int page,
+            @RequestParam(defaultValue = "10")int size
+    ){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("titulo").ascending());
+        return livroService.getTodosLivrosPage(pageable);
+    }
+
+    @GetMapping("/ultimos3")
+    public List<LivroModel> getUltimos3Livros() {
+        return livroService.getUltimos3Livros();
     }
 
     @DeleteMapping("/delete")
@@ -38,5 +56,10 @@ public class LivroController {
     @PutMapping("/update")
     public void updateLivro(@RequestBody LivroModel livroModel){
         livroService.updateLivro(livroModel);
+    }
+
+    @GetMapping("/porIsbn")
+    public LivroModel findByIsbn(@RequestParam String isbn){
+        return livroService.getLivrosPorIsbn(isbn);
     }
 }

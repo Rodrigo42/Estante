@@ -7,9 +7,12 @@ import org.drogo.exceptions.NotNullException;
 import org.drogo.model.LivroModel;
 import org.drogo.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,11 +20,13 @@ public class LivroService {
 
     @Autowired
     private LivroRepository repository;
-    private LocalDate localDate;
 
     public List<LivroModel> getTodosLivros(){
         return repository.findAll();
     }
+    public Page<LivroModel> getTodosLivrosPage(Pageable pageable){return repository.findAll(pageable);}
+
+    public LivroModel getLivrosPorIsbn(String isbn){return repository.findByIsbn(isbn);}
 
     public LivroModel addLivro(LivroModel livroModel){
         if(repository.findByTitulo(livroModel.getTitulo()) != null){
@@ -37,8 +42,16 @@ public class LivroService {
             throw new NotNullException("ISBN é obrigatório.");
         }
 
+        if (livroModel.getCreatedAt() == null) {
+            livroModel.setCreatedAt(LocalDateTime.now());
+        }
+
         return repository.save(livroModel);
     }
+
+        public List<LivroModel> getUltimos3Livros() {
+            return repository.findTop3ByOrderByCreatedAtDesc();
+        }
 
     public void deleteLivroPeloTitulo(String titulo){
         repository.deleteByTitulo(titulo);
