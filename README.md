@@ -25,6 +25,8 @@
   * **Integração Frontend X Backend finalizada**
 
 ## 🖥️ Proximos passos
+  * Testes com JUnit
+  * Sistema de usuário
   * Subir a aplicação para AWS.
   * Desenvolver o sistema de usuários com segurança.
 
